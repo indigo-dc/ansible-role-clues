@@ -4,7 +4,7 @@
   when: ansible_os_family == "RedHat"
   
 - lineinfile: dest={{SLURM_CONF}} regexp='NodeName=' line='NodeName={{VNODE}}[1-{{ec3_max_instances|int}}] CPUs=1 State=UNKNOWN'
-- lineinfile: dest={{SLURM_CONF}} regexp='PartitionName=' line='PartitionName={{VNODE}}[1-{{ec3_max_instances|int}}] Default=YES MaxT
+- lineinfile: dest={{SLURM_CONF}} regexp='PartitionName=' line='PartitionName=debug Nodes={{VNODE}}[1-{{ec3_max_instances|int}}] Default=YES MaxTime=INFINITE State=UP'
   
 - shell: scontrol reconfig
 
