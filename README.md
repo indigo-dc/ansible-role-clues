@@ -1,2 +1,2 @@
 # ansible-role-clues
-Ansible role for CLUES
+Asible role for the CLUES software

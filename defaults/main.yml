@@ -1,0 +1,10 @@
+---
+clues_secret_token: not_very_secret_token
+ec3_deployment_id: ec3-id
+indigo_orchestrator_url: http://orchestrator01.indigo.recas.ba.infn.it:8080
+# Select between the following: torque, slurm, sge, condor, mesos
+clues_queue_system: mesos
+# Number of max worker nodes to deploy in the cluster
+ec3_max_instances: 10
+# Prefix applied to the elastic cluster worker nodes
+vnode_prefix: vnode-

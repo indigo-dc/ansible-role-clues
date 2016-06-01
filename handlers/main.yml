@@ -1,0 +1,6 @@
+---
+# handler for the clues daemon
+- name: restart cluesd
+  service:
+    name: cluesd
+    state: restarted
