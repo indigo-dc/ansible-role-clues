@@ -1,20 +1,28 @@
+- set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf" SBATCH_PATH="/usr/bin/sbatch"
+  when: ansible_os_family == "Debian"
+- set_fact: SLURM_CONF="/etc/slurm/slurm.conf" SBATCH_PATH="/usr/local/bin/sbatch"
+  when: ansible_os_family == "RedHat"
+  
+- lineinfile: dest={{SLURM_CONF}} regexp='NodeName=' line='NodeName={{VNODE}}[1-{{ec3_max_instances|int}}] CPUs=1 State=UNKNOWN'
+- lineinfile: dest={{SLURM_CONF}} regexp='PartitionName=' line='PartitionName={{VNODE}}[1-{{ec3_max_instances|int}}] Default=YES MaxT
+  
+- shell: scontrol reconfig
+
 - ini_file: dest=/etc/clues2/clues2.cfg section=general option=LRMS_CLASS value=cluesplugins.slurm
   notify: restart cluesd
 - copy: src=/etc/clues2/conf.d/plugin-slurm.cfg-example dest=/etc/clues2/conf.d/plugin-slurm.cfg force=no
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_SERVER value=slurmserverpublic
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_SERVER value=slurmserver
   notify: restart cluesd
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_PARTITION_COMMAND value="/usr/bin/scontrol -o show partitions"
+  when: ansible_os_family == "Debian"
+  notify: restart cluesd
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_NODES_COMMAND value="/usr/bin/scontrol -o show nodes"
+  when: ansible_os_family == "Debian"
+  notify: restart cluesd
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_JOBS_COMMAND value="/usr/bin/scontrol -o show jobs"
+  notify: restart cluesd
+  when: ansible_os_family == "Debian"
 
-- command: mv /usr/local/bin/sbatch /usr/local/bin/sbatch.o creates=/usr/local/bin/sbatch.o
-- command: mv /usr/local/bin/clues-slurm-wrapper /usr/local/bin/sbatch creates=/usr/local/bin/sbatch
-
-# CLUES SLURM configuration
-- ini_file: dest=/etc/clues2/clues2.cfg section=general option=LRMS_CLASS value=cluesplugins.slurm
-  notify: restart cluesd
-- copy: src=/etc/clues2/conf.d/plugin-slurm.cfg-example dest=/etc/clues2/conf.d/plugin-slurm.cfg force=no
-  notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_SERVER value=slurmserverpublic
-  notify: restart cluesd
-
-- command: mv /usr/local/bin/sbatch /usr/local/bin/sbatch.o creates=/usr/local/bin/sbatch.o
-- command: mv /usr/local/bin/clues-slurm-wrapper /usr/local/bin/sbatch creates=/usr/local/bin/sbatch
+- copy: src={{SBATCH_PATH}} dest=/usr/local/bin/sbatch.o
+- copy: src=/usr/local/bin/clues-slurm-wrapper dest={{SBATCH_PATH}}
