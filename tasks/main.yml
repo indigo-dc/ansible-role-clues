@@ -99,3 +99,6 @@
 - name: Configuring the elastic cluster to use HTCondor LRMS
   include: htcondor.yml
   when: clues_queue_system == "condor"
+
+- name: Configuring the orchestrator plugin
+  include: orchestrator.yml
