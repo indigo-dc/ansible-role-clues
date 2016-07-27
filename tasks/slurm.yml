@@ -29,7 +29,14 @@
   with_first_found:
    - /usr/bin/sbatch
    - /usr/local/bin/sbatch
+
 - copy: src=/usr/local/bin/clues-slurm-wrapper dest={{ item }}
   with_first_found:
    - /usr/bin/sbatch
    - /usr/local/bin/sbatch
+  when: ansible_os_family == "Debian"
+- copy: src=/usr/bin/clues-slurm-wrapper dest={{ item }}
+  with_first_found:
+   - /usr/bin/sbatch
+   - /usr/local/bin/sbatch
+  when: ansible_os_family == "RedHat"
