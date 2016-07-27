@@ -1,11 +1,15 @@
-- name: Fail if OS distro is not Ubuntu 14.04
-  fail:
-      msg="The role is designed only for Ubuntu 14.04"
-  when: "{{ ansible_distribution_version | version_compare('14.04', '!=') }}"
-
 # CLUES2 requirements
 - name: Apt install CLUES2 requirements in Deb system
   apt: pkg=python-sqlite,unzip
+  when: ansible_os_family == "Debian"
+
+- name: Install epel
+  yum: pkg=epel-release
+  when: ansible_os_family == "RedHat"
+
+- name: Yum install CLUES2 requirements in RH system
+  yum: pkg=python-sqlite3dbm,unzip
+  when: ansible_os_family == "RedHat"
 
 - name: Install CLUES2 pip requirements
   pip: name={{item}}
