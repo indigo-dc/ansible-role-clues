@@ -1,6 +1,6 @@
-- set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf" SBATCH_PATH="/usr/bin/sbatch" SLURM_SERVICE="slurm-llnl"
+- set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf" SLURM_SERVICE="slurm-llnl"
   when: ansible_os_family == "Debian"
-- set_fact: SLURM_CONF="/etc/slurm/slurm.conf" SBATCH_PATH="/usr/local/bin/sbatch" SLURM_SERVICE="slurm"
+- set_fact: SLURM_CONF="/etc/slurm/slurm.conf" SLURM_SERVICE="slurm"
   when: ansible_os_family == "RedHat"
   
 - lineinfile: dest={{SLURM_CONF}} regexp='NodeName=' line='NodeName={{vnode_prefix}}[1-{{ec3_max_instances|int}}] CPUs=1 State=UNKNOWN'
@@ -25,5 +25,11 @@
   notify: restart cluesd
   when: ansible_os_family == "Debian"
 
-- copy: src={{SBATCH_PATH}} dest=/usr/local/bin/sbatch.o mode=755
-- copy: src=/usr/local/bin/clues-slurm-wrapper dest={{SBATCH_PATH}}
+- copy: src={{ item }} dest=/usr/local/bin/sbatch.o mode=755
+  with_first_found:
+   - /usr/bin/sbatch
+   - /usr/local/bin/sbatch
+- copy: src=/usr/local/bin/clues-slurm-wrapper dest={{ item }}
+  with_first_found:
+   - /usr/bin/sbatch
+   - /usr/local/bin/sbatch
