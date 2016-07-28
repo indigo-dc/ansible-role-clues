@@ -15,15 +15,21 @@
   notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_SERVER value=slurmserver
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_PARTITION_COMMAND value="/usr/bin/scontrol -o show partitions"
-  when: ansible_os_family == "Debian"
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_PARTITION_COMMAND value="{{item}} -o show partitions"
+  with_first_found:
+   - /usr/bin/scontrol
+   - /usr/local/bin/scontrol
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_NODES_COMMAND value="/usr/bin/scontrol -o show nodes"
-  when: ansible_os_family == "Debian"
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_NODES_COMMAND value="{{item}} -o show nodes"
+  with_first_found:
+   - /usr/bin/scontrol
+   - /usr/local/bin/scontrol
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_JOBS_COMMAND value="/usr/bin/scontrol -o show jobs"
+- ini_file: dest=/etc/clues2/conf.d/plugin-slurm.cfg section=SLURM option=SLURM_JOBS_COMMAND value="{{item}} -o show jobs"
+  with_first_found:
+   - /usr/bin/scontrol
+   - /usr/local/bin/scontrol
   notify: restart cluesd
-  when: ansible_os_family == "Debian"
 
 - copy: src={{ item }} dest=/usr/local/bin/sbatch.o mode=755
   with_first_found:
