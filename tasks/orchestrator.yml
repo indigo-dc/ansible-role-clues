@@ -1,7 +1,9 @@
 # CLUES INDIGO Orchestrator plugin configuration
 - ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_DEPLOY_ID value={{ec3_deployment_id}}
   notify: restart cluesd
+- ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_DEPLOY_ID value={{ec3_deployment_id}}
+  notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_MAX_INSTANCES value={{ec3_max_instances}}
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_URL value={{indigo_orchestrator_url}}
+- ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_AUTH_DATA value={{ec3_iam_access_token}}
   notify: restart cluesd
