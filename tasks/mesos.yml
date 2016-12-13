@@ -5,3 +5,11 @@
   notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_SERVER value=mesosserverpublic
   notify: restart cluesd
+
+- file: path=/etc/clues2/ state=directory
+- copy:
+  content: |
+     {% for number in range(1, ec3_max_instances|int + 1) %}
+     {{vnode_prefix}}{{number}}
+     {% endfor %}
+  dest: "/etc/clues2/mesos_vnodes.info"
