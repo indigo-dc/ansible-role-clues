@@ -4,6 +4,29 @@
 - command: cp /etc/clues2/conf.d/plugin-mesos.cfg-example /etc/clues2/conf.d/plugin-mesos.cfg creates=/etc/clues2/conf.d/plugin-mesos.cfg
   notify: restart cluesd
   
+
+- set_fact: marathon_port=8080
+
+- set_fact: marathon_port=8443
+  when: clues_marathon_credentials.protocol == "https"
+
+- set_fact: marathon_curl_opts=""    
+
+- set_fact: marathon_curl_opts="-k -u {{clues_marathon_credentials.user}}:{{clues_marathon_credentials.password}}"
+  when: clues_marathon_credentials.protocol == "https"            
+
+
+- set_fact: chronos_port=4400
+
+- set_fact: chronos_port=4443
+  when: clues_chronos_credentials.protocol == "https"
+
+- set_fact: chronos_curl_opts=""
+
+- set_fact: chronos_curl_opts="-k -u {{clues_chronos_credentials.user}}:{{clues_chronos_credentials.password}}"
+  when: clues_chronos_credentials.protocol == "https"
+
+
 - set_fact: mesos_servername="mesosserverpublic"
 - ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_SERVER value={{mesos_servername}}
   notify: restart cluesd
@@ -13,11 +36,11 @@
   notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_STATE_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:5050/master/state.json"
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_MARATHON_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:8080/v2/apps?embed=tasks"
+- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_MARATHON_COMMAND value="/usr/bin/curl {{marathon_curl_opts}} -L -X GET http://{{mesos_servername}}:{{marathon_port}}/v2/apps?embed=tasks"
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_CHRONOS_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:4400/scheduler/jobs"
+- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_CHRONOS_COMMAND value="/usr/bin/curl {{chronos_curl_opts}} -L -X GET http://{{mesos_servername}}:{{chronos_port}}/scheduler/jobs"
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_CHRONOS_STATE_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:4400/scheduler/graph/csv"
+- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_CHRONOS_STATE_COMMAND value="/usr/bin/curl {{chronos_curl_opts}} -L -X GET http://{{mesos_servername}}:{{chronos_port}}/scheduler/graph/csv"
   notify: restart cluesd
 
 - file: path=/etc/clues2/ state=directory
