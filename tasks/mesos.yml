@@ -12,7 +12,7 @@
 
 - set_fact: marathon_curl_opts=""    
 
-- set_fact: marathon_curl_opts="-k -u {{clues_marathon_credentials.user}}:{{clues_marathon_credentials.password}}"
+- set_fact: marathon_curl_opts="-k -u {{clues_marathon_credentials.user}}:{{clues_marathon_credentials.token}}"
   when: clues_marathon_credentials.protocol == "https"            
 
 
@@ -23,7 +23,7 @@
 
 - set_fact: chronos_curl_opts=""
 
-- set_fact: chronos_curl_opts="-k -u {{clues_chronos_credentials.user}}:{{clues_chronos_credentials.password}}"
+- set_fact: chronos_curl_opts="-k -u {{clues_chronos_credentials.user}}:{{clues_chronos_credentials.token}}"
   when: clues_chronos_credentials.protocol == "https"
 
 
