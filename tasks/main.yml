@@ -1,6 +1,6 @@
 # CLUES2 requirements
 - name: Apt install CLUES2 requirements in Deb system
-  apt: pkg=python-sqlite,unzip
+  apt: pkg=python-sqlite,unzip,python-pip,python-requests
   when: ansible_os_family == "Debian"
 
 - name: Install epel
@@ -8,7 +8,7 @@
   when: ansible_os_family == "RedHat"
 
 - name: Yum install CLUES2 requirements in RH system
-  yum: pkg=python-sqlite3dbm,unzip
+  yum: pkg=python-sqlite3dbm,unzip,python-pip,python-requests
   when: ansible_os_family == "RedHat"
 
 - name: Install CLUES2 pip requirements
@@ -70,7 +70,7 @@
 
 - ini_file: dest=/etc/clues2/clues2.cfg section={{ item.section }} option={{ item.option }} value="{{ item.value }}"
   with_items:
-    - { section: 'general', option: 'POWERMANAGER_CLASS', value: 'cluesplugins.indigo_orchestrator' }
+    - { section: 'general', option: 'POWERMANAGER_CLASS', value: '{{clues_powermanager_class}}' }
     - { section: 'scheduling', option: 'IDLE_TIME', value: '300' }
     - { section: 'monitoring', option: 'MAX_WAIT_POWERON', value: '2000' }
     - { section: 'monitoring', option: 'MAX_WAIT_POWEROFF', value: '600' }
@@ -84,25 +84,8 @@
 - file: path=/usr/local/ec3 state=directory mode=755
 
 # CLUES LRMS configuration
-- name: Configuring the elastic cluster to use Torque LRMS
-  include: torque.yml
-  when: clues_queue_system == "torque"
-
-- name: Configuring the elastic cluster to use SGE LRMS
-  include: sge.yml
-  when: clues_queue_system == "sge"
-
-- name: Configuring the elastic cluster to use SLURM LRMS
-  include: slurm.yml
-  when: clues_queue_system == "slurm"
-
-- name: Configuring the elastic cluster to use Mesos LRMS
-  include: mesos.yml
-  when: clues_queue_system == "mesos"
-
-- name: Configuring the elastic cluster to use HTCondor LRMS
-  include: htcondor.yml
-  when: clues_queue_system == "condor"
+- name: Configuring the elastic cluster to use "{{clues_queue_system}}" LRMS
+  include: "{{clues_queue_system}}.yml"
 
 - name: Configuring the orchestrator plugin
   include: orchestrator.yml
