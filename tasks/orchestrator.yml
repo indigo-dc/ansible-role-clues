@@ -1,5 +1,5 @@
 # CLUES INDIGO Orchestrator plugin configuration
-- ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_DEPLOY_ID value={{ec3_deployment_id}} mode=0600 owner=root
+- ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_DEPLOY_ID value={{ec3_deployment_id}} mode=0600 owner=root create=yes
   notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_MAX_INSTANCES value={{ec3_max_instances}}
   notify: restart cluesd

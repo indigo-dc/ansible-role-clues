@@ -84,25 +84,8 @@
 - file: path=/usr/local/ec3 state=directory mode=755
 
 # CLUES LRMS configuration
-- name: Configuring the elastic cluster to use Torque LRMS
-  include: torque.yml
-  when: clues_queue_system == "torque"
-
-- name: Configuring the elastic cluster to use SGE LRMS
-  include: sge.yml
-  when: clues_queue_system == "sge"
-
-- name: Configuring the elastic cluster to use SLURM LRMS
-  include: slurm.yml
-  when: clues_queue_system == "slurm"
-
-- name: Configuring the elastic cluster to use Mesos LRMS
-  include: mesos.yml
-  when: clues_queue_system == "mesos"
-
-- name: Configuring the elastic cluster to use HTCondor LRMS
-  include: htcondor.yml
-  when: clues_queue_system == "condor"
+- name: Configuring the elastic cluster to use "{{clues_queue_system}}" LRMS
+  include: "{{clues_queue_system}}.yml"
 
 - name: Configuring the orchestrator plugin
   include: orchestrator.yml
