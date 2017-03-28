@@ -1,4 +1,5 @@
 # CLUES INDIGO Orchestrator plugin configuration
+- file: path=/etc/clues2/conf.d/plugin-ec3.cfg state=touch mode=0600 owner=root group=root
 - ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_DEPLOY_ID value={{ec3_deployment_id}}
   notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-ec3.cfg section="INDIGO ORCHESTRATOR" option=INDIGO_ORCHESTRATOR_MAX_INSTANCES value={{ec3_max_instances}}
