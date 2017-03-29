@@ -73,7 +73,7 @@
     - { section: 'general', option: 'POWERMANAGER_CLASS', value: '{{clues_powermanager_class}}' }
     - { section: 'scheduling', option: 'IDLE_TIME', value: '300' }
     - { section: 'monitoring', option: 'MAX_WAIT_POWERON', value: '2000' }
-    - { section: 'monitoring', option: 'MAX_WAIT_POWEROFF', value: '600' }
+    - { section: 'monitoring', option: 'MAX_WAIT_POWEROFF', value: '900' }
     - { section: 'monitoring', option: 'PERIOD_LIFECYCLE', value: '10' }
     - { section: 'general', option: 'CLUES_SECRET_TOKEN', value: '{{clues_secret_token}}' }
     - { section: 'client', option: 'CLUES_SECRET_TOKEN', value: '{{clues_secret_token}}' }
