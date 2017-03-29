@@ -16,3 +16,5 @@ ec3_max_instances: 10
 vnode_prefix: vnode-
 # Class to use as power manager (POWERMANAGER_CLASS)
 clues_powermanager_class: cluesplugins.indigo_orchestrator
+# Needed due to Chronos API changes
+chronos_version: 3.0.2
