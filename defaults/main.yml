@@ -18,3 +18,7 @@ vnode_prefix: vnode-
 clues_powermanager_class: cluesplugins.indigo_orchestrator
 # Needed due to Chronos API changes
 chronos_version: 3.0.2
+# Default value for credentials
+clues_mesos_credentials: {user: "", token: "", protocol "http"}
+clues_marathon_credentials: {user: "", token: "", protocol "http"}
+clues_chronos_credentials: {user: "", token: "", protocol "http"}

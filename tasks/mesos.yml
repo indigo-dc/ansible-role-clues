@@ -5,6 +5,12 @@
   notify: restart cluesd
 
 
+- set_fact: mesos_curl_opts=""
+
+- set_fact: mesos_curl_opts="-k -u {{clues_mesos_credentials.user}}:{{clues_mesos_credentials.token}}"
+  when: clues_mesos_credentials.user != "" and clues_mesos_credentials.token != ""
+
+
 - set_fact: marathon_port=8080
 
 - set_fact: marathon_port=8443
@@ -13,7 +19,7 @@
 - set_fact: marathon_curl_opts=""
 
 - set_fact: marathon_curl_opts="-k -u {{clues_marathon_credentials.user}}:{{clues_marathon_credentials.token}}"
-  when: clues_marathon_credentials.protocol == "https"
+  when: clues_marathon_credentials.user != "" and clues_marathon_credentials.token != ""
 
 
 - set_fact: chronos_port=4400
@@ -24,7 +30,7 @@
 - set_fact: chronos_curl_opts=""
 
 - set_fact: chronos_curl_opts="-k -u {{clues_chronos_credentials.user}}:{{clues_chronos_credentials.token}}"
-  when: clues_chronos_credentials.protocol == "https"
+  when: clues_chronos_credentials.user != "" and clues_chronos_credentials.token} != ""
 
 - set_fact: chronos_api_call=""
 
@@ -34,11 +40,11 @@
 - set_fact: mesos_servername="mesosserverpublic"
 - ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_SERVER value={{mesos_servername}}
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_NODES_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:5050/master/slaves"
+- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_NODES_COMMAND value="/usr/bin/curl {{mesos_curl_opts}} -L -X GET {{clues_mesos_credentials.protocol}}://{{mesos_servername}}:5050/master/slaves"
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_JOBS_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:5050/master/tasks.json"
+- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_JOBS_COMMAND value="/usr/bin/curl {{mesos_curl_opts}} -L -X GET {{clues_mesos_credentials.protocol}}://{{mesos_servername}}:5050/master/tasks.json"
   notify: restart cluesd
-- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_STATE_COMMAND value="/usr/bin/curl -L -X GET http://{{mesos_servername}}:5050/master/state.json"
+- ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_STATE_COMMAND value="/usr/bin/curl {{mesos_curl_opts}} -L -X GET {{clues_mesos_credentials.protocol}}://{{mesos_servername}}:5050/master/state.json"
   notify: restart cluesd
 - ini_file: dest=/etc/clues2/conf.d/plugin-mesos.cfg section=MESOS option=MESOS_MARATHON_COMMAND value="/usr/bin/curl {{marathon_curl_opts}} -L -X GET {{clues_marathon_credentials.protocol}}://{{mesos_servername}}:{{marathon_port}}/v2/apps?embed=tasks"
   notify: restart cluesd
