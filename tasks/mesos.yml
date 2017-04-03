@@ -30,7 +30,7 @@
 - set_fact: chronos_curl_opts=""
 
 - set_fact: chronos_curl_opts="-k -u {{clues_chronos_credentials.user}}:{{clues_chronos_credentials.token}}"
-  when: clues_chronos_credentials.user != "" and clues_chronos_credentials.token} != ""
+  when: clues_chronos_credentials.user != "" and clues_chronos_credentials.token != ""
 
 - set_fact: chronos_api_call=""
 
