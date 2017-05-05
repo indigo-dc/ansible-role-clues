@@ -35,17 +35,17 @@
    - /usr/local/bin/scontrol
   notify: restart cluesd
 
-- copy: src={{ item }} dest=/usr/local/bin/sbatch.o mode=755
+- copy: src={{ item }} dest=/usr/local/bin/sbatch.o mode=755 force=no
   with_first_found:
    - /usr/bin/sbatch
    - /usr/local/bin/sbatch
 
-- copy: src=/usr/local/bin/clues-slurm-wrapper dest={{ item }}
+- copy: src=/usr/local/bin/clues-slurm-wrapper dest={{ item }} force=no
   with_first_found:
    - /usr/bin/sbatch
    - /usr/local/bin/sbatch
   when: ansible_os_family == "Debian"
-- copy: src=/usr/bin/clues-slurm-wrapper dest={{ item }}
+- copy: src=/usr/bin/clues-slurm-wrapper dest={{ item }} force=no
   with_first_found:
    - /usr/bin/sbatch
    - /usr/local/bin/sbatch
