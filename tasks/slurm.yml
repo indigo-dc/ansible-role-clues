@@ -13,6 +13,10 @@
   become_user: slurm
   command: slurmctld
 
+- name: Wait Slurm daemon to be up
+  wait_for:
+    port: 6817
+
 - shell: scontrol reconfig
 
 - ini_file: dest=/etc/clues2/clues2.cfg section=general option=LRMS_CLASS value=cluesplugins.slurm
