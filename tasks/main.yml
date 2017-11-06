@@ -17,6 +17,9 @@
   ignore_errors: yes
 
 - name: Install CLUES2 pip requirements
+  pip: name=pyOpenSSL
+
+- name: Install CLUES2 pip requirements
   pip: name={{item}}
   with_items:
   - web.py
