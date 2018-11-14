@@ -1,4 +1,4 @@
-- set_fact: clues_powermanager_class=cluesplugins."{{ clues_powermanager_plugin }}"
+- set_fact: clues_powermanager_class="cluesplugins.{{ clues_powermanager_plugin }}"
   when: clues_powermanager_plugin is defined
 
 # CLUES2 requirements
