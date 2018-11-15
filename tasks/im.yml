@@ -3,10 +3,11 @@
   file: path=/usr/local/ec3 state=directory mode=755
 
 - name: Create auth file
-  copy:
-    dest: /usr/local/ec3/auth.dat
-    content: "{{ im_auth_data }}"
-    force: no
+  lineinfile:
+    path: /usr/local/ec3/auth.dat
+    line: "{{ item }}"
+    create: yes
+  with_items: "{{ im_auth_data.split('\\n') }}"
 
 - name: Create IM plugin configuration file for CLUES2
   copy: src=/etc/clues2/conf.d/plugin-im.cfg-example dest=/etc/clues2/conf.d/plugin-im.cfg force=no
