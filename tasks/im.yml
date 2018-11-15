@@ -8,6 +8,7 @@
     line: "{{ item }}"
     create: yes
   with_items: "{{ im_auth_data.split('\\n') }}"
+  no_log: True
 
 - name: Create IM plugin configuration file for CLUES2
   copy: src=/etc/clues2/conf.d/plugin-im.cfg-example dest=/etc/clues2/conf.d/plugin-im.cfg force=no
