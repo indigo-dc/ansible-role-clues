@@ -29,15 +29,19 @@
   - ply
 
 # Get CLUES2 and dependencies
-- name: Retrieving CLUES2 and cpyutils from github
-  get_url: url=https://github.com/grycap/{{item}}/archive/master.zip dest=/tmp/{{item}}.zip force=no
+- name: Retrieving cpyutils from github
+  get_url: url=https://github.com/grycap/cpyutils/archive/master.zip dest=/tmp/cpyutils.zip force=no
   register: result
   until: result|success
   retries: 5
   delay: 1
-  with_items:
-  - clues
-  - cpyutils
+
+- name: Retrieving CLUES2 from github
+  get_url: url=https://github.com/grycap/clues/archive/{{ clues_version }}.zip dest=/tmp/clues.zip force=no
+  register: result
+  until: result|success
+  retries: 5
+  delay: 1
 
 # Unarchive CLUES2 and dependencies
 - name: Unarchiving CLUES2 and cpyutils
@@ -48,7 +52,7 @@
 
 # Get CLUES2 INDIGO plugins
 - name: Retrieving CLUES2 INDIGO plugins
-  get_url: url=https://raw.githubusercontent.com/indigo-dc/clues-indigo/master/{{item}}.py dest=/tmp/clues-master/cluesplugins/{{item}}.py force=yes
+  get_url: url=https://raw.githubusercontent.com/indigo-dc/clues-indigo/master/{{item}}.py dest=/tmp/clues-{{ clues_version }}/cluesplugins/{{item}}.py force=yes
   register: result
   until: result|success
   retries: 5
@@ -62,7 +66,7 @@
 - name: Installing cpyutils
   command: python setup.py install chdir=/tmp/cpyutils-master
 - name: Installing CLUES2
-  command: python setup.py install chdir=/tmp/clues-master creates=/usr/local/bin/cluesserver
+  command: python setup.py install chdir=/tmp/clues-{{ clues_version }} creates=/usr/local/bin/cluesserver
 
 # CLUES2 configuration
 # /etc/hosts configuration
