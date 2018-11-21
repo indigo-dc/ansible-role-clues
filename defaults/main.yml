@@ -22,3 +22,5 @@ chronos_version: 3.0.2
 clues_mesos_credentials: {user: "", token: "", protocol "http"}
 clues_marathon_credentials: {user: "", token: "", protocol "http"}
 clues_chronos_credentials: {user: "", token: "", protocol "http"}
+# Default value for IM auth data
+im_auth_data: im_auth_data

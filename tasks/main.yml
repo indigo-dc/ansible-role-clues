@@ -1,3 +1,6 @@
+- set_fact: clues_powermanager_class="cluesplugins.{{ clues_powermanager_plugin }}"
+  when: clues_powermanager_plugin is defined
+
 # CLUES2 requirements
 - name: Apt install CLUES2 requirements in Deb system
   apt: pkg=python-sqlite,unzip,python-pip,python-requests
@@ -97,3 +100,8 @@
 
 - name: Configuring the orchestrator plugin
   include: orchestrator.yml
+  when: clues_powermanager_class == "cluesplugins.indigo_orchestrator"
+
+- name: Configuring the im plugin
+  include: im.yml
+  when: clues_powermanager_class == "cluesplugins.im"
