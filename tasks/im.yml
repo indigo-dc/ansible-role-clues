@@ -4,9 +4,8 @@
 
 - name: Create auth file
   copy:
-    dest: /usr/local/ec3/auth.dat
     content: "{{ im_auth_data }}"
-    force: no
+    dest: /usr/local/ec3/auth.dat
 
 - name: Create IM plugin configuration file for CLUES2
   copy: src=/etc/clues2/conf.d/plugin-im.cfg-example dest=/etc/clues2/conf.d/plugin-im.cfg force=no
@@ -17,6 +16,7 @@
   with_items:
     - { option: 'IM_VIRTUAL_CLUSTER_AUTH_DATA_FILE', value: '/usr/local/ec3/auth.dat' }
     - { option: 'IM_VIRTUAL_CLUSTER_DROP_FAILING_VMS', value: '600' }
+    - { option: 'IM_VIRTUAL_CLUSTER_TOSCA', value: 'True' }
   notify: restart cluesd
 
 - name: Set EC3 folder rights
