@@ -20,7 +20,7 @@
   ignore_errors: yes
 
 - name: Install CLUES2 pip requirements
-  pip: name=pyOpenSSL
+  pip: name=pyOpenSSL state=latest
 
 - name: Install CLUES2 pip requirements
   pip: name={{item}}
