@@ -27,6 +27,7 @@
   with_items:
   - web.py
   - ply
+  - pyyaml
 
 # Get CLUES2 and dependencies
 - name: Retrieving cpyutils from github
