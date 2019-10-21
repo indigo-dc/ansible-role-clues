@@ -1,5 +1,8 @@
 - name: Create nodes info file
   template: src=vnodes.j2 dest="/etc/clues2/slurm_vnodes.info"
+  vars:
+    vnode_suffix: ".localdomain"
+    max_number_of_nodes: "{{ ec3_max_instances }}"
 
 - set_fact: SLURM_CONF="/usr/local/etc/slurm.conf" SLURM_SERVICE="slurmctld"
   when: ansible_os_family == "Debian"
