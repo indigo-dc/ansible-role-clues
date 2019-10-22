@@ -1,3 +1,6 @@
+- debug:
+    msg: "{{ wn_cpus }}"
+
 - set_fact: SLURM_CONF="/usr/local/etc/slurm.conf" SLURM_SERVICE="slurmctld"
   when: ansible_os_family == "Debian"
 
