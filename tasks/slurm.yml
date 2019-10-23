@@ -1,13 +1,23 @@
-- debug:
-    msg: "{{ wn_cpus }}"
-
 - set_fact: SLURM_CONF="/usr/local/etc/slurm.conf" SLURM_SERVICE="slurmctld"
   when: ansible_os_family == "Debian"
 
 - set_fact: SLURM_CONF="/etc/slurm/slurm.conf" SLURM_SERVICE="slurm"
   when: ansible_os_family == "RedHat"
-  
+
+- name: Check cons_res enabled
+  lineinfile:
+    dest: /etc/slurm/slurm.conf
+    line: "SelectType=select/cons_res"
+    state: present
+  check_mode: yes
+  register: cons_res_enabled
+
 - lineinfile: dest={{SLURM_CONF}} regexp='NodeName=' line='NodeName={{vnode_prefix}}[1-{{ec3_max_instances|int}}] CPUs={{ wn_cpus }} State=UNKNOWN'
+  when: cons_res_enabled is not changed
+
+- lineinfile: dest={{SLURM_CONF}} regexp='NodeName=' line='NodeName={{vnode_prefix}}[1-{{ec3_max_instances|int}}] CPUs=1 State=UNKNOWN'
+  when: cons_res_enabled is changed
+
 - lineinfile: dest={{SLURM_CONF}} regexp='PartitionName=' line='PartitionName=debug Nodes={{vnode_prefix}}[1-{{ec3_max_instances|int}}] Default=YES MaxTime=INFINITE State=UP'
 
 # start SLURM daemon

@@ -26,5 +26,5 @@ clues_chronos_credentials: {user: "", token: "", protocol "http"}
 im_auth_data: im_auth_data
 # Clues version (branch or tag) to install
 clues_version: master
-# IM infrastructure description from IM_INFRASTRUCTURE_RADL
-im_infrastructure_json: ""
+# Number of CPUs of the WNs
+wn_cpus: 1
