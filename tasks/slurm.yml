@@ -6,7 +6,7 @@
 
 - name: Check cons_res enabled
   lineinfile:
-    dest: /etc/slurm/slurm.conf
+    dest: "{{ SLURM_CONF }}"
     line: "SelectType=select/cons_res"
     state: present
   check_mode: yes
