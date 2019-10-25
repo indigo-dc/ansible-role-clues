@@ -1,7 +1,7 @@
 - set_fact: SLURM_CONF="/usr/local/etc/slurm.conf" SLURM_SERVICE="slurmctld"
   when: ansible_os_family == "Debian"
 
-- set_fact: SLURM_CONF="/etc/slurm/slurm.conf" SLURM_SERVICE="slurm"
+- set_fact: SLURM_CONF="/etc/slurm/slurm.conf" SLURM_SERVICE="slurmctld"
   when: ansible_os_family == "RedHat"
 
 - name: Check cons_res enabled
@@ -23,7 +23,7 @@
 # start SLURM daemon
 - name: Restart SLURM service after reconfiguration
   service:
-    name: slurmctld
+    name: "{{ SLURM_SERVICE }}"
     state: restarted
 
 - name: Wait Slurm daemon to be up
