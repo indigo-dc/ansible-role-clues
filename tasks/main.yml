@@ -14,14 +14,6 @@
   yum: pkg=python-sqlite3dbm,unzip,python-pip,python-requests
   when: ansible_os_family == "RedHat"
 
-- easy_install:
-    name: pip
-    state: latest
-  ignore_errors: yes
-
-- name: Install CLUES2 pip requirements
-  pip: name=pyOpenSSL state=latest
-
 - name: Install CLUES2 pip requirements
   pip: name={{item}}
   with_items:
