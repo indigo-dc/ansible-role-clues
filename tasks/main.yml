@@ -30,14 +30,14 @@
 - name: Retrieving cpyutils from github
   get_url: url=https://github.com/grycap/cpyutils/archive/master.zip dest=/tmp/cpyutils.zip force=no
   register: result
-  until: result|success
+  until: result is success
   retries: 5
   delay: 1
 
 - name: Retrieving CLUES2 from github
   get_url: url=https://github.com/grycap/clues/archive/{{ clues_version }}.zip dest=/tmp/clues.zip force=no
   register: result
-  until: result|success
+  until: result is success
   retries: 5
   delay: 1
 
@@ -52,7 +52,7 @@
 - name: Retrieving CLUES2 INDIGO plugins
   get_url: url=https://raw.githubusercontent.com/indigo-dc/clues-indigo/master/{{item}}.py dest=/tmp/clues-{{ clues_version }}/cluesplugins/{{item}}.py force=yes
   register: result
-  until: result|success
+  until: result is success
   retries: 5
   delay: 1
   with_items:
