@@ -14,15 +14,15 @@
   yum: pkg=python-sqlite3dbm,unzip,python-pip,python-requests
   when: ansible_os_family == "RedHat"
 
+- name: Install CLUES2 pip requirements
+  pip: name=pyOpenSSL state=latest
+
 - name: Upgrade pip
   pip: name=pip version=9.0.3
 
 - name: Upgrade setuptools with Pip
   pip: name=setuptools state=latest
   when: ansible_os_family != "RedHat" or ansible_distribution_major_version|int > 6
-
-- name: Install CLUES2 pip requirements
-  pip: name=pyOpenSSL state=latest
 
 - name: Install CLUES2 pip requirements
   pip: name={{item}}
